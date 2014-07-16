@@ -3,8 +3,25 @@ package PriceOrderMatch;
 public class TestHelper {
 	Engine _engine;
 	
-	Order oa101x100 = new Order("JPM", "MAX", 1, (short)101, 100);	
-	Order ob101x25x = new Order("JPM", "XAM", 0, (short)101, 25);	
+	Order Initoa101x100() {
+		return new Order("JPM", "MAX", 1, (short)101, 100);
+	}	
+	
+	Order Initob110x100() {
+		return new Order("JPM", "MAX", 0, (short)110, 100);
+	}		
+	
+	Order Initob110x50() {
+		return new Order("JPM", "MAX", 0, (short)110, 50);
+	}		
+	
+	Order Initob110x25() { 
+		return new Order("JPM", "MAX", 0, (short)110, 25);	
+	}	
+	
+	Order Initob110x25x() { 
+		return new Order("JPM", "XAM", 0, (short)110, 25);	
+	}
 	
 	int orderid;
 	
@@ -16,13 +33,29 @@ public class TestHelper {
 //		  execs_out_iter = execs_out;
 //		  execs_out_len = 0;
 		}
-	
+		
 	void Run()
 	{
-		Order[] orders = {oa101x100};
-		test(orders, orders.length);
+		Order[] ask = { Initoa101x100() };
+		test(ask, ask.length);
 		
-		Order[] queueThenTrade = {ob101x25x, ob101x25x};
+		//sell, bid -> Cross sell
+		Order[] inOrder = { Initoa101x100(), Initob110x100() };
+		test(inOrder, inOrder.length);
+		
+		//Bid, sell -> Cross bid
+		Order[] reOrder = { Initob110x100(), Initoa101x100() };
+		test(reOrder, reOrder.length);		
+		
+		//Partial fill
+		Order[] partialFill = { Initoa101x100(), Initob110x50() };
+		test(partialFill, partialFill.length);
+		
+		//Incremental fill
+		Order[] incrementalFill = { Initoa101x100(), Initob110x25(), Initob110x25(), Initob110x25(), Initob110x25(), Initob110x25() };
+		test(incrementalFill, incrementalFill.length);
+		
+		Order[] queueThenTrade = { Initob110x25x(), Initob110x25x()};
 		test(queueThenTrade, queueThenTrade.length);
 		//TEST(3, {oa101x100 X ob101x100}, {xa101x100 X xb101x100}); 		
 		
