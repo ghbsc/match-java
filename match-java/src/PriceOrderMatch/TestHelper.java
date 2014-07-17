@@ -77,6 +77,14 @@ public class TestHelper {
 	  return 1;		
 	}
 	
+	int feed_cancels(int[] cancels, int cancels_len) {
+		  int i;
+		  for(i = 0; i < cancels_len; i++) {
+		    cancel(cancels[i]); 
+		  }
+		  return 1;
+		}	
+	
 	/* IN: orders: sequence of orders
 	   OUT: points received on test */
 	int test(Order[] orders, int orders_len) {
@@ -92,4 +100,15 @@ public class TestHelper {
 	  return ok;
 	}		
 	
+	int test_cancel(Order[] orders1, int orders_len1, int[] cancels, int cancel_len, 
+			Order[] orders2, int orders_len2) {
+		int ok = 1;
+		set_globals();
+		
+		ok = feed_orders(orders1, orders_len1); 
+//		feed_cancels(cancels, cancel_len);
+		ok = feed_orders(orders2, orders_len2); 
+		
+		return ok;
+	}
 }

@@ -112,6 +112,7 @@ public class Engine {
 			if(iterator.hasNext())
 				iterator.next();
 		}
+		order.id = _nextid;
 		iterator.add(order);
 	}
 	
@@ -130,6 +131,29 @@ public class Engine {
 	  return _nextid++;
 	}	
 	
+	public void Cancel(int orderID) {
+		boolean isFound = false;
+		ListIterator<Order> askIterator = _asks.iterator();
+		
+		while(askIterator.hasNext()) {
+			if(orderID == askIterator.next().id) {
+				askIterator.remove();
+				isFound = true;
+				break;
+			}
+		}
+		
+		if(!isFound) {
+			ListIterator<Order> bidIterator = _bids.iterator();
+			
+			while(bidIterator.hasNext()) {
+				if(orderID == bidIterator.next().id) {
+					bidIterator.remove();
+					break;
+				}
+			}			
+		}
+	}
 	
 	private boolean Cross_Test(Order order, short bookPrice)
 	{

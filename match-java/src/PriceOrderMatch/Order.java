@@ -6,6 +6,7 @@ public class Order {
 	int side;
 	String symbol;
 	String trader;
+	int id;
 	
 	public Order(String symbol, String trader, int side, short price, long size) {
 		this.symbol = symbol;
