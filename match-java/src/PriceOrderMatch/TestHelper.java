@@ -80,7 +80,7 @@ public class TestHelper {
 	int feed_cancels(int[] cancels, int cancels_len) {
 		  int i;
 		  for(i = 0; i < cancels_len; i++) {
-		    cancel(cancels[i]); 
+			_engine.Cancel(cancels[i]); 
 		  }
 		  return 1;
 		}	
@@ -106,7 +106,7 @@ public class TestHelper {
 		set_globals();
 		
 		ok = feed_orders(orders1, orders_len1); 
-//		feed_cancels(cancels, cancel_len);
+		feed_cancels(cancels, cancel_len);
 		ok = feed_orders(orders2, orders_len2); 
 		
 		return ok;
