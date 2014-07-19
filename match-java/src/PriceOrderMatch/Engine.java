@@ -2,7 +2,7 @@ package PriceOrderMatch;
 
 import java.util.ListIterator;
 
-public class Engine {
+public class Engine implements IEngine {
 	DoublyLinkedList<Order> _asks;
 	DoublyLinkedList<Order> _bids;
 	int _nextid;

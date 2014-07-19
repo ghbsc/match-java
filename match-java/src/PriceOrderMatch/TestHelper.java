@@ -3,7 +3,7 @@ package PriceOrderMatch;
 import java.util.ArrayList;
 
 public class TestHelper {
-	Engine _engine;
+	IEngine _engine;
 	
 	Order Initoa101x100() {
 		return new Order("JPM", "MAX", 1, (short)101, 100);
@@ -36,7 +36,7 @@ public class TestHelper {
 	int orderid;
 	
 	void set_globals() {
-	  _engine = new Engine();		
+	  _engine = new OrderBook();		
 	  orderid = 0;
 //		  totaltests++;
 //		  exec_overflow = 0;
