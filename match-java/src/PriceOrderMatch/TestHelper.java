@@ -1,10 +1,20 @@
 package PriceOrderMatch;
 
+import java.util.ArrayList;
+
 public class TestHelper {
 	Engine _engine;
 	
 	Order Initoa101x100() {
 		return new Order("JPM", "MAX", 1, (short)101, 100);
+	}	
+	
+	Order Initoa90x25() {
+		return new Order("JPM", "MAX", 1, (short)90, 25);
+	}	
+	
+	Order Initoa90x50() {
+		return new Order("JPM", "MAX", 1, (short)90, 50);
 	}	
 	
 	Order Initob110x100() {
@@ -55,8 +65,28 @@ public class TestHelper {
 		Order[] incrementalFill = { Initoa101x100(), Initob110x25(), Initob110x25(), Initob110x25(), Initob110x25(), Initob110x25() };
 		test(incrementalFill, incrementalFill.length);
 		
-		Order[] queueThenTrade = { Initob110x25x(), Initob110x25x()};
+		Order[] queueThenTrade = { Initob110x25x(), Initob110x25(), Initoa90x25() };
 		test(queueThenTrade, queueThenTrade.length);
+		
+		// cancel so no execution
+//		ArrayList<Order> f_order = new ArrayList<Order>();
+//		f_order.add(Initob110x25());
+//		
+//		ArrayList<Order> s_order = new ArrayList<Order>();
+//		s_order.add(Initoa90x25());		
+		
+		Order[] first_order = { Initob110x25() };
+		Order[] second_order = { Initoa90x25() };
+		int[] cancel_order = { 1 };
+		test_cancel(first_order, first_order.length, cancel_order, cancel_order.length, 
+					second_order, second_order.length);
+		
+		Order[] first_long_order = { Initob110x100(), Initob110x25x(), Initob110x25x(), Initob110x50() };
+		Order[] second_long_order = { Initoa90x50() };
+		int[] cancel_orders = { 1, 4, 3 };
+		test_cancel(first_long_order, first_long_order.length, cancel_orders, cancel_orders.length, 
+					second_long_order, second_long_order.length);
+		
 		//TEST(3, {oa101x100 X ob101x100}, {xa101x100 X xb101x100}); 		
 		
 	}	
