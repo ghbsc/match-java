@@ -17,6 +17,10 @@ public class TestHelper {
 		return new Order("JPM", "MAX", 1, (short)90, 50);
 	}	
 	
+	Order Initob101x100() {
+		return new Order("JPM", "MAX", 0, (short)101, 100);
+	}
+	
 	Order Initob110x100() {
 		return new Order("JPM", "MAX", 0, (short)110, 100);
 	}		

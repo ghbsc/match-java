@@ -1,6 +1,7 @@
 package PriceOrderMatch;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -18,8 +19,11 @@ public class OrderBook implements IEngine {
 	ArrayList<LinkedList<OrderBookEntry>> _pricePoints;	
 	
 	public OrderBook() {
-		_arenaBookEntries = new ArrayList<OrderBookEntry>(101000);
-		_pricePoints = new ArrayList<LinkedList<OrderBookEntry>>(Integer.MAX_VALUE);
+		final int MAX_ENTRY_SIZE = 101000;
+		final int MAX_PRICE_SIZE = 100000;
+		
+		_arenaBookEntries = new ArrayList<OrderBookEntry>(Collections.nCopies(MAX_ENTRY_SIZE, new OrderBookEntry()));
+		_pricePoints = new ArrayList<LinkedList<OrderBookEntry>>(Collections.nCopies(MAX_PRICE_SIZE, new LinkedList<OrderBookEntry>()));
 		
 		_curOrderID = 0;
 		_askMin = Short.MAX_VALUE;
@@ -41,17 +45,23 @@ public class OrderBook implements IEngine {
 			    		OrderBookEntry bookEntry = iterator.next();
 			    		
 			    		//Completely fill
-			    		if(orderSize >= bookEntry.size) {
+			    		if(bookEntry.size < orderSize) {
 			    			//Trade
 			    			orderSize -= bookEntry.size;
 			    			iterator.remove();
 			    		}
 			    		else {
 			    			//Trade
-			    			//if(bookEntry.size > orderSize)
-			    			bookEntry.size -= orderSize;
-			    			iterator.set(bookEntry);
-			    			order.size = 0;
+			    			if(bookEntry.size > orderSize) {
+			    				//Still have left over
+				    			bookEntry.size -= orderSize;
+				    			iterator.set(bookEntry);	
+				    			order.size = 0;				    			
+			    			}
+			    			else 
+			    				//if(iterator.hasNext()) iterator.next();
+			    				iterator.remove();
+			    			
 			    			
 			    			return ++_curOrderID;
 			    		}
@@ -82,17 +92,21 @@ public class OrderBook implements IEngine {
 			    		OrderBookEntry bookEntry = iterator.next();
 			    		
 			    		//Completely fill
-			    		if(orderSize >= bookEntry.size) {
+			    		if(bookEntry.size < orderSize) {
 			    			//Trade
 			    			orderSize -= bookEntry.size;
 			    			iterator.remove();
 			    		}
 			    		else {
 			    			//Trade
-			    			//if(bookEntry.size > orderSize)
-			    			bookEntry.size -= orderSize;
-			    			iterator.set(bookEntry);
-			    			order.size = 0;
+			    			if(bookEntry.size > orderSize) {
+				    			bookEntry.size -= orderSize;
+				    			iterator.set(bookEntry);
+				    			order.size = 0;
+			    			}
+			    			else
+			    				iterator.remove();
+			    			
 			    			
 			    			return ++_curOrderID;
 			    		}
@@ -115,7 +129,7 @@ public class OrderBook implements IEngine {
 	} //End Limit
 
 	public void Cancel(int orderID) {
-		
+		_arenaBookEntries.get(orderID).size = 0;
 	}
 	
 } //End Class
