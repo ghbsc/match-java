@@ -22,9 +22,17 @@ public class OrderBook implements IEngine {
 		final int MAX_ENTRY_SIZE = 101000;
 		final int MAX_PRICE_SIZE = 100000;
 		
-		_arenaBookEntries = new ArrayList<OrderBookEntry>(Collections.nCopies(MAX_ENTRY_SIZE, new OrderBookEntry()));
-		_pricePoints = new ArrayList<LinkedList<OrderBookEntry>>(Collections.nCopies(MAX_PRICE_SIZE, new LinkedList<OrderBookEntry>()));
-		
+		//_arenaBookEntries = new ArrayList<OrderBookEntry>(Collections.nCopies(MAX_ENTRY_SIZE, new OrderBookEntry()));
+		_arenaBookEntries = new ArrayList<OrderBookEntry>(MAX_ENTRY_SIZE);
+		while(_arenaBookEntries.size() < MAX_ENTRY_SIZE)
+			_arenaBookEntries.add(new OrderBookEntry());
+//		for(OrderBookEntry e : _arenaBookEntries)
+
+		//_pricePoints = new ArrayList<LinkedList<OrderBookEntry>>(Collections.nCopies(MAX_PRICE_SIZE, new LinkedList<OrderBookEntry>()));
+		_pricePoints = new ArrayList<LinkedList<OrderBookEntry>>(MAX_PRICE_SIZE);
+		while(_pricePoints.size() < MAX_PRICE_SIZE)
+			_pricePoints.add(new LinkedList<OrderBookEntry>());
+			
 		_curOrderID = 0;
 		_askMin = Short.MAX_VALUE;
 		_bidMax = 1;
